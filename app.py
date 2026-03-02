@@ -151,9 +151,13 @@ def index():
 
 @app.route('/generate', methods=['POST'])
 def generate():
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if not data or 'classes' not in data:
         return jsonify({'error': 'Provide JSON with "classes" key.'}), 400
+
+    classes = data.get('classes')
+    if not isinstance(classes, list) or len(classes) == 0:
+        return jsonify({'error': 'Add at least one class before generating Excel.'}), 400
 
     wb = Workbook()
     # remove the default sheet if present
@@ -162,7 +166,7 @@ def generate():
     except Exception:
         pass
 
-    for cls in data['classes']:
+    for cls in classes:
         create_class_sheet(wb, cls)
 
     buf = BytesIO()
