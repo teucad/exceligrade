@@ -199,7 +199,13 @@ async function doGenerate() {
   }
   try {
     const res = await fetch('/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-    if (!res.ok) { const err = await res.json(); alert('Error: ' + (err.error || res.statusText)); return; }
+    if (!res.ok) {
+      let message = res.statusText;
+      try { const err = await res.json(); message = err.error || message; }
+      catch (e) { try { message = (await res.text()).slice(0, 400) || message; } catch (e2) {} }
+      alert('Error: ' + message);
+      return;
+    }
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a'); a.href = url; a.download = 'gradebook.xlsx'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
