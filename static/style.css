@@ -1,0 +1,43 @@
+:root{
+  --bg:#f7f9fc; --card:#ffffff; --muted:#6b7280; --accent:#2563eb; --danger:#ef4444;
+}
+*{box-sizing:border-box}
+body{font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);margin:0;padding:24px;color:#0f172a}
+.site-header{margin-bottom:18px}
+.lead{margin-top:6px;color:var(--muted)}
+.controls{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+.primary{background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
+.primary:hover{opacity:.95}
+.classes{display:flex;flex-direction:column;gap:12px}
+.class-card{background:var(--card);padding:12px;border-radius:8px;box-shadow:0 1px 2px rgba(15,23,42,0.06)}
+.class-row{display:flex;gap:12px;align-items:center}
+.class-row input[type="text"]{padding:8px;border:1px solid #e6e9ee;border-radius:6px}
+.subcontrols{display:flex;gap:8px;margin-top:8px}
+.assignments, .students{margin-top:12px}
+.assignments{display:inline-block; /* shrink to fit contents so headers stay near fields */}
+
+/* use a grid for rows so columns line up exactly */
+.assign-row, .assign-row.header {
+  display: grid;
+  /* fixed 180px name ensures weight/count stay left; remove column auto‑sized */
+  grid-template-columns: 180px 80px 80px auto;
+  column-gap: 8px;
+  align-items: center;
+}
+.assign-row.header { font-weight: bold; }
+
+/* make name input fill its fixed column */
+.assign-row .assign-name { width:100%; }
+
+/* weight/count fixed width via grid */
+
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid #eef2f7;padding:6px;text-align:left}
+th{background:#fbfdff}
+textarea{width:100%;min-height:180px;padding:10px;border-radius:6px;border:1px solid #e6e9ee}
+.json-preview{margin-top:14px}
+.footer{margin-top:14px;color:var(--muted)}
+.small{font-size:0.9rem;color:var(--muted)}
+.icon-btn{background:transparent;border:1px solid #e6e9ee;padding:6px;border-radius:6px;cursor:pointer}
+.remove{background:transparent;border:0;color:var(--danger);cursor:pointer}
+@media (max-width:700px){body{padding:12px}.class-row{flex-direction:column;align-items:stretch}}

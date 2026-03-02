@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Exceligrade - Syllabus to Excel</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>Exceligrade</h1>
+      <p class="lead">Turn your class syllabi into an editable Excel gradebook.</p>
+    </header>
+
+    <main>
+      <section class="controls">
+          <div class="left">
+            <button id="addClass" class="primary">+ Add Class</button>
+            <input id="fileInput" type="file" accept=".pdf,.docx,.txt" style="margin-left:8px" />
+            <button id="extractBtn" class="icon-btn">Extract Weights</button>
+            <input id="jsonFileInput" type="file" accept=".json" style="display:none;" />
+            <button id="loadJsonBtn" class="icon-btn">Load JSON</button>
+          </div>
+          <div class="right">
+            <button id="generate" class="primary">Generate Excel</button>
+            <button id="downloadJson">Download JSON</button>
+          </div>
+      </section>
+
+      <section id="classesContainer" class="classes"></section>
+
+      <section class="json-preview">
+        <h3>JSON Preview</h3>
+        <textarea id="jsonInput" aria-label="Syllabus JSON preview"></textarea>
+      </section>
+
+      <section class="extracted-text" style="margin-top:12px; display:none;">
+        <h3>Extracted Text</h3>
+        <textarea id="extractedText" readonly></textarea>
+      </section>
+    </main>
+
+    <footer class="footer">Tips: Add assignments and click "Generate Excel" to download your gradebook.</footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
