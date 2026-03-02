@@ -43,20 +43,21 @@ python run_app.py
 
 ### Android Mobile App
 
-Requires Android SDK, NDK, and Buildozer. See [ANDROID_BUILD.md](ANDROID_BUILD.md) for full setup.
+Requires Linux/WSL, Android SDK, NDK, and Buildozer. Buildozer does **not** run on native Windows PowerShell. See [ANDROID_BUILD.md](ANDROID_BUILD.md) for full setup.
 
 ```powershell
-.\.venv\Scripts\Activate.ps1
-pip install buildozer cython kivy
+# Run inside WSL/Linux shell
+python3 -m venv .venv
+source .venv/bin/activate
+pip install buildozer cython
 buildozer android debug
 # Output: bin/exceligrade-1.0-debug.apk
 ```
 
-Or use the helper script:
+Or use the helper script from PowerShell (it now fails fast on native Windows and tells you to use WSL):
 
 ```powershell
-.\.venv\Scripts\Activate.ps1
-.\build_android.ps1
+.\build_android.ps1 -BuildType debug
 ```
 
 ### Web Browser (Development)
