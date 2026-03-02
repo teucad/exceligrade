@@ -90,6 +90,10 @@ switch ($BuildType) {
     }
 }
 
+if ($LASTEXITCODE -ne 0) {
+    throw "Build failed with exit code $LASTEXITCODE"
+}
+
 Write-Host ""
 Write-Host "Build complete!" -ForegroundColor Green
 Write-Host ""
