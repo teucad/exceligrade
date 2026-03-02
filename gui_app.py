@@ -154,14 +154,14 @@ class ExceligradeGUI:
     
     def download_json(self):
         data = self.build_data()
-        file = filedialog.asksaveasfile(mode='w', suffix='.json', defaultextension='.json')
+        file = filedialog.asksaveasfile(mode='w', defaultextension='.json', filetypes=[('JSON files', '*.json'), ('All files', '*.*')])
         if file:
             json.dump(data, file, indent=2)
             file.close()
             messagebox.showinfo('Success', 'JSON saved')
     
     def load_json(self):
-        file = filedialog.askopenfile(mode='r', suffix='.json')
+        file = filedialog.askopenfile(mode='r', filetypes=[('JSON files', '*.json'), ('All files', '*.*')])
         if file:
             try:
                 data = json.load(file)
@@ -218,7 +218,7 @@ class ExceligradeGUI:
                 messagebox.showerror('Error', resp.text[:500])
                 return
             
-            file = filedialog.asksaveasfile(mode='wb', suffix='.xlsx', defaultextension='.xlsx')
+            file = filedialog.asksaveasfile(mode='wb', defaultextension='.xlsx', filetypes=[('Excel Workbook', '*.xlsx'), ('All files', '*.*')])
             if file:
                 file.write(resp.content)
                 file.close()
