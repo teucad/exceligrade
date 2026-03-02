@@ -100,8 +100,9 @@ class ExceligradeGUI:
             row_frame.pack(fill=tk.X, pady=2)
             
             name_var = tk.StringVar(value=data.get('name', '') if data else '')
-            weight_var = tk.DoubleVar(value=data.get('weight', 0) if data else 0)
-            count_var = tk.IntVar(value=data.get('count', 1) if data else 1)
+            # Use StringVar so partially-typed numeric input doesn't crash when read.
+            weight_var = tk.StringVar(value=str(data.get('weight', 0) if data else 0))
+            count_var = tk.StringVar(value=str(data.get('count', 1) if data else 1))
             
             ttk.Entry(row_frame, textvariable=name_var, width=30).pack(side=tk.LEFT, padx=2)
             ttk.Entry(row_frame, textvariable=weight_var, width=10).pack(side=tk.LEFT, padx=2)
@@ -130,8 +131,22 @@ class ExceligradeGUI:
             assigns = []
             for row in cls['assignments']:
                 nm = row['name'].get().strip()
-                wt = row['weight'].get()
-                cnt = row['count'].get()
+                wt_raw = row['weight'].get().strip()
+                cnt_raw = row['count'].get().strip()
+
+                try:
+                    wt = float(wt_raw) if wt_raw else 0
+                except ValueError:
+                    wt = 0
+
+                try:
+                    cnt = int(cnt_raw) if cnt_raw else 1
+                except ValueError:
+                    cnt = 1
+
+                if cnt < 1:
+                    cnt = 1
+
                 if nm and wt > 0:  # Skip empty/zero rows
                     assigns.append({'name': nm, 'weight': wt, 'count': cnt})
             classes.append({'name': cls['name'].get() or 'Class', 'assignments': assigns})
