@@ -13,6 +13,36 @@ function el(tag, attrs = {}, ...children) {
 const classesContainer = document.getElementById('classesContainer');
 const jsonInput = document.getElementById('jsonInput');
 
+
+const themeToggle = document.getElementById('themeToggle');
+
+function applyTheme(theme) {
+  document.body.setAttribute('data-theme', theme);
+  if (themeToggle) {
+    themeToggle.textContent = theme === 'dark' ? '☀️ Light mode' : '🌙 Dark mode';
+    themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('exceligrade-theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+  applyTheme(initialTheme);
+}
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const current = document.body.getAttribute('data-theme') || 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem('exceligrade-theme', next);
+  });
+}
+
+initTheme();
+
+
 function updateJsonPreview() {
   const data = buildDataFromDOM();
   jsonInput.value = JSON.stringify(data, null, 2);
