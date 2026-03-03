@@ -8,42 +8,12 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-function Invoke-Step {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$Description,
-        [Parameter(Mandatory = $true)]
-        [scriptblock]$Action
-    )
-
-    Write-Host $Description -ForegroundColor Yellow
-    & $Action
-    if ($LASTEXITCODE -ne 0) {
-        throw "$Description failed with exit code $LASTEXITCODE"
-    }
-}
-
 Write-Host "Exceligrade Android Build Helper" -ForegroundColor Green
 Write-Host "================================" -ForegroundColor Green
 Write-Host ""
 
 $repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $repoRoot
-
-# Buildozer does not support native Windows. Stop early with actionable guidance.
-if ($env:OS -eq "Windows_NT" -and -not $env:WSL_DISTRO_NAME) {
-    Write-Host "Buildozer does not run on native Windows." -ForegroundColor Red
-    Write-Host "Use WSL (Ubuntu) and run the build there instead." -ForegroundColor Yellow
-    Write-Host "" 
-    Write-Host "Quick start:" -ForegroundColor Yellow
-    Write-Host "  wsl --install -d Ubuntu" -ForegroundColor Cyan
-    Write-Host "  wsl" -ForegroundColor Cyan
-    Write-Host "  cd /mnt/c/path/to/exceligrade" -ForegroundColor Cyan
-    Write-Host "  python3 -m venv .venv && source .venv/bin/activate" -ForegroundColor Cyan
-    Write-Host "  pip install buildozer cython" -ForegroundColor Cyan
-    Write-Host "  buildozer android debug" -ForegroundColor Cyan
-    exit 1
-}
 
 $venvPython = Join-Path $repoRoot ".venv/Scripts/python.exe"
 $pythonCmd = if (Test-Path $venvPython) { $venvPython } else { "python" }
@@ -56,13 +26,12 @@ if (-not (Test-Path $venvPython)) {
     Write-Host ""
 }
 
-Invoke-Step -Description "Installing build dependencies..." -Action {
-    & $pythonCmd -m pip install -q buildozer cython
-}
+# Ensure buildozer and dependencies are installed into the selected Python environment
+Write-Host "Installing build dependencies..." -ForegroundColor Yellow
+& $pythonCmd -m pip install -q buildozer cython kivy
 
-Invoke-Step -Description "Verifying buildozer installation..." -Action {
-    & $pythonCmd -m buildozer --version | Out-Null
-}
+# Verify buildozer can be invoked from the current Python interpreter.
+& $pythonCmd -m buildozer --version | Out-Null
 
 # Check for Android SDK
 if (-not $env:ANDROID_SDK_ROOT) {
