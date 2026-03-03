@@ -2,6 +2,9 @@
 
 ## Prerequisites
 
+> **Important:** Buildozer does not run on native Windows Python/PowerShell.
+> Use WSL (Ubuntu) or a Linux machine for Android packaging.
+
 1. **Java Development Kit (JDK)** – Java 8 or higher
    - Download from: https://www.oracle.com/java/technologies/downloads/
 
@@ -11,7 +14,7 @@
 3. **Android NDK** – for compiling native libraries
    - Install via Android SDK manager or download separately
 
-4. **Buildozer** – Python tool to package Kivy apps
+4. **Buildozer** – Python tool to package Kivy apps (Linux/WSL only)
    ```bash
    pip install buildozer cython
    ```
@@ -21,7 +24,7 @@
    pip install kivy requests openpyxl pdfminer.six python-docx flask
    ```
 
-## Environment Setup (Windows)
+## Environment Setup (WSL/Linux)
 
 Create or edit your `buildozer.spec` file (already created in the project).
 
@@ -33,20 +36,20 @@ Create or edit your `buildozer.spec` file (already created in the project).
 
 ## Build Steps
 
-1. **Activate virtualenv:**
-   ```powershell
-   .\.venv\Scripts\Activate.ps1
+1. **Create and activate virtualenv:**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
    ```
 
-2. **Install Kivy and build tools:**
+2. **Install build tools:**
    ```bash
-   pip install -r requirements_android.txt
    pip install buildozer cython
    ```
 
-3. **Navigate to project directory:**
+3. **Navigate to project directory (inside WSL):**
    ```bash
-   cd C:\your-path\exceligrade
+   cd /mnt/c/your-path/exceligrade
    ```
 
 4. **Build the APK:**
@@ -71,14 +74,14 @@ Create or edit your `buildozer.spec` file (already created in the project).
 buildozer android debug -- --help
 ```
 Set `JAVA_HOME` environment variable:
-```
-set JAVA_HOME=C:\Program Files\Java\jdk-21
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ```
 
 ### Missing Android SDK
-```
-set ANDROID_SDK_ROOT=C:\Android\Sdk
-set ANDROID_NDK_ROOT=C:\Android\ndk\23.1.7779620
+```bash
+export ANDROID_SDK_ROOT=$HOME/Android/Sdk
+export ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/23.1.7779620
 ```
 
 ### Build cache issues
